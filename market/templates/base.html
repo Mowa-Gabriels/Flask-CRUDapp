@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -22,32 +23,59 @@
           </button>
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="{{ url_for('index')}}">Home</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/market">Market</a>
-              </li>
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  Accounts
-                </a>
-                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                  <li><a class="dropdown-item" href="/login">Login</a></li>
-                  <li><a class="dropdown-item" href="/register">Register</a></li>
-                  <li><hr class="dropdown-divider"></li>
-                  <li><a class="dropdown-item" href="#">Something else here</a></li>
-                </ul>
+                <a class="nav-link" href="/">Market</a>
               </li>
              
             </ul>
-            <form class="d-flex">
-              <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-              <button class="btn btn-outline-success" type="submit">Search</button>
-            </form>
+
+          {% if current_user.is_authenticated %}
+                {% if current_user.budget < 5000 %}
+                <button class="btn btn-outline-danger">${{current_user.budget}}</button>
+                {% else %}
+                  <button class="btn btn-outline-success">${{current_user.budget}}</button>
+                {% endif %}
+           {% endif %}
+         
+            <li class="nav-item dropdown navbar-nav me-5 mb-2 mb-lg-0">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Accounts
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                {% if current_user.is_authenticated %}
+                <li><a class="dropdown-item" href="/logout">Logout</a></li>
+                {% else %}
+                <li><a class="dropdown-item" href="/login">Login</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="/register">Register</a></li>
+            
+                {% endif %}
+              </ul>
+            </li>
+            
+            
+            
           </div>
         </div>
       </nav>
+
+      <br/>
+
+      {% if current_user.is_authenticated %}
+      {% if current_user.budget < 5000 %}
+            
+          <div class="container text-center">
+    
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>Tuale Comrade!</strong> e be like say your budget don drop below 5k oo.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  </div>
+                
+          </div>
+
+        {% endif %}
+        {% endif %}
       {% block content %}
 
       {% endblock %}

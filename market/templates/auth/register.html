@@ -6,23 +6,32 @@
 
 {% block content %}
 <div class="container text-center">
+
+
+
+    
 <h2> Register</h2>
 <form method="POST">
     {{form.hidden_tag()}}  
     <h3>Create an account</h3>
     <br>
 
+    {% include 'include/messages.html' %}
     {{form.username.label()}}
     {{form.username(class="form-control", placeholder="username")}}
 
     {{form.email.label()}}
     {{form.email(class="form-control", placeholder="email")}}
 
-    {{form.password1.label()}}
-    {{form.password1(class="form-control", placeholder="password")}}
+    {{form.password.label()}}
+    {{form.password(class="form-control", placeholder="password")}}
 
     {{form.password2.label()}}
     {{form.password2(class="form-control", placeholder="confirm password")}}
+
+    <div>
+      <a href="{{url_for ('login')}}">Have an account already?</a>
+  </div>
 
     <br/>
 
