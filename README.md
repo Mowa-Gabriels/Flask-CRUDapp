@@ -1,7 +1,9 @@
-# Flask-CRUDapp
+# Flask-Market(CRUD)app
 
 A webapp that that:
 
 - performs CRUD operations
 - registers and authenticate users
-- more operstions loading..
+- put items up for sale
+- make purchase and sales at the marketsquare based on budget(minimalistic)
+- more operations loading..
