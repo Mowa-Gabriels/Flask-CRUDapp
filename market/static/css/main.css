@@ -6,3 +6,12 @@ body {
 nav{
 margin-bottom: 5%;
 }
+
+.modal-content {
+    background-color: black;
+    color: white;
+    }
+.card {
+    background-color: rgb(40, 47, 55);
+
+    }

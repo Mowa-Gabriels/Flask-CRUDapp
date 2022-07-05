@@ -1,0 +1,82 @@
+
+<!-- InfoModal -->
+<div class="modal fade" id="infoModal-{{item.id}}"
+data-bs-backdrop="static" data-bs-keyboard="false" 
+ tabindex="-1" aria-labelledby="infoModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="infoModalLabel">
+            
+            {{item.name}}
+        
+        </h5>
+          <button type="button" class="btn-close"
+           data-bs-dismiss="modal" aria-label="Close">
+        </button>
+        </div>
+        <div class="modal-body">
+         {{item.description}}
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" 
+          data-bs-dismiss="modal">Close</button>
+         
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+<!-- PurchaseModal -->
+<div class="modal fade" id="purchaseModal-{{item.id}}"
+data-bs-backdrop="static" data-bs-keyboard="false" 
+ tabindex="-1" aria-labelledby="purchaseModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="purchaseModalLabel">
+            
+            {{item.name}}
+        
+        </h5>
+          <button type="button" class="btn-close"
+           data-bs-dismiss="modal" aria-label="Close">
+        </button>
+        </div>
+        <div class="modal-body">
+            <form method="POST">
+                    {{purchase_form.hidden_tag()}}
+
+                    <h4 class="text-center">
+                        Are you sure you want to buy {{item.name}} for ${{item.price}}
+                    </h4>
+                    <h6 class="text-center">
+                    By clicking <strong>Purchase</strong>, you will purchase this item.
+                    </h6>
+                    <br>
+                    <div class="text-center">
+
+                    <input id="purchased_item" name="purchased_item" type="hidden" value="{{item.name}}">
+
+                    {% if current_user.budget < -200 %}
+                    {{purchase_form.submit(class="btn btn-outline-success btn-block disabled")}}
+                    {% else %}
+                    {{purchase_form.submit(class="btn btn-outline-success btn-block")}}
+                    {% endif %}
+
+                    </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" 
+          data-bs-dismiss="modal">Close</button>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+

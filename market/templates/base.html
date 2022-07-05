@@ -63,19 +63,46 @@
       <br/>
 
       {% if current_user.is_authenticated %}
-      {% if current_user.budget < 5000 %}
-            
-          <div class="container text-center">
-    
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <strong>Tuale Comrade!</strong> e be like say your budget don drop below 5k oo.
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                  </div>
+          {% if current_user.budget <= 1000 and current_user.budget > 500 %}
                 
-          </div>
+              <div class="container text-center">
+        
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>Tuale Comrade!</strong> e be like say your budget don drop below 5k oo.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                      </div>
+                    
+              </div>
 
-        {% endif %}
-        {% endif %}
+          {% elif current_user.budget < 0 and current_user.budget >= -200 %}
+                
+              <div class="container text-center">
+        
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>Uhmm Comrade!</strong> you don broke, your <strong>Buy Now, Pay Later</strong> has been activated
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                      </div>
+                    
+              </div>
+
+
+              {% elif current_user.budget < -200 %}
+                
+              <div class="container text-center">
+        
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>Alaye wetin now!</strong> sapa don carry you reach BNPL limit, <strong>Purchase Deactivated.</strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                      </div>
+                    
+              </div>
+
+          
+
+          {% endif %}
+
+
+      {% endif %}
       {% block content %}
 
       {% endblock %}

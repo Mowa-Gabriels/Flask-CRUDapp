@@ -1,18 +1,65 @@
 
-from flask import render_template, url_for, redirect, flash
-from flask_login import login_user, login_required, logout_user
+from urllib import request
+from flask import render_template, url_for, redirect, flash, request
+from flask_login import current_user, login_user, login_required, logout_user
 from market import app
-from market.forms import LoginForm, RegisterForm
+from market.forms import LoginForm, PurchaseForm, RegisterForm, SellForm
 from market.models import MarketModel, User
 from market import db
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 @login_required
 def index():
-    item = MarketModel.query.all()
+    selling_form = SellForm()
+    purchase_form = PurchaseForm()
+    if request.method=="POST":
 
+        #PurchaseLogic
+        purchase_item = request.form.get('purchased_item')
+        p_item_object = MarketModel.query.filter_by(name=purchase_item).first()
 
-    return render_template('index.html', items=item)
+        #line20 -36 basically defines if a user can make a purchase based on budget
+        #but then this operation has been sorted on the template using conditional statements but here is another way to execute it 
+        #by creating a CAN_PURCHASE method in the models
+
+        if p_item_object:
+            if current_user.can_purchase(p_item_object): 
+               
+                # p_item_object.owner = current_user.id
+                # current_user.budget -= p_item_object.price
+                # db.session.commit()
+                # the above live of codes was commented out to create a method in the models
+                p_item_object.buy(current_user)
+                flash(f'Congratulations, you purchased {p_item_object.name} for the price of ${p_item_object.price}.', category='primary')
+            else:
+                flash(f"Unfortunately, you don't have enough money to purchase {p_item_object.name} for the price of ${p_item_object.price}.", category='warning')
+
+        #SellingLogic
+        sold_item = request.form.get('sold_item')
+        s_item_object = MarketModel.query.filter_by(name=sold_item).first()
+        
+        #line20 -36 basically defines if a user can make a sell based on the item availability in the database
+        #but then this operation has been sorted on the template using conditional statements but here is another way to execute it 
+        #by creating a CAN_SELL method in the models
+
+        if s_item_object:
+            if current_user.can_sell(s_item_object): 
+            
+                # s_item_object.owner = current_user.id
+                # current_user.budget += s_item_object.price
+                # db.session.commit()
+                # the above live of codes was commented out to create a method in the models
+                s_item_object.sell(current_user)
+                flash(f'Congratulations, you sold {s_item_object.name} back to market!')
+            else:
+                flash(f"Something went wrong while trying to sell {s_item_object.name}.")
+        return redirect (url_for('index'))
+    
+    
+    if request.method=='GET':
+        item = MarketModel.query.filter_by(owner=None)
+        owned_items = MarketModel.query.filter_by(owner=current_user.id)
+        return render_template('index.html', items=item, purchase_form=purchase_form, owned_items=owned_items, selling_form=selling_form)
 
 
 
@@ -53,7 +100,7 @@ def register():
         db.session.add(user_to_create)
         db.session.commit()
 
-        # moves registered users to login page
+        # redirects registerd users to login page
         # return redirect(url_for('login'))
 
         #to automatically log users in 
